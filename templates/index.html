@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static\w3-css.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">    
+    <style>
+        *{
+          text-decoration: none;
+         }
+
+        .bg-wallpaper{
+            background-image: url("static/images/wallpaper.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center;
+            }
+
+        .font{
+            display: flex; 
+            font-family: 'Rubik Doodle Shadow',cursive; 
+            color: red;
+            }
+
+        .image:hover{transform: scale(1.1); opacity: 0.8}
+
+        /* body color */
+        .background1{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 650px;
+            max-width: 100%;
+            background-color: rgba(0, 0, 0, 0.603);
+            }
+
+        .background2{
+                    background-color: rgba(0, 0, 0, 0.603);
+                    }
+
+        /* card view */
+        #card-view{
+            color: white;
+            border-radius: 25px;
+            padding-top: 50px;
+            background-color: rgba(0, 0, 0, 0.603);
+            height: 500x;
+            width: 900px;
+            padding-bottom: 50px;
+            }
+        
+        /* background colors  */
+        #card-view-bg{
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            }
+
+        /* form */
+        #card-view-bg form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 330px;
+        }
+
+        /* form button */
+        #card-view-bg form button {
+            border: 0;
+            border-radius: 10px;
+            color: white;
+            background-color: #E50914;
+            height: 48px;
+            padding: 16px;
+            margin-top: 24px;
+            width: 250px;
+        }
+    </style>
+    <title>Home</title>
+</head>
+<body class="bg-wallpaper">
+    
+    <!-- top bar with navigation -->
+    <div class="w3-contianer" id="top-bar">
+        <div class="w3-row w3-black" style="padding: 5px;">
+            <div class="w3-col m6 w3-xlarge font">
+                <img src="static\images\logo.png" alt="logo" class="w3-round-xlarge" style="height: 40px; margin-top: 4px; margin-right: 10px; margin-left: 10px;">
+                <span style="margin-top: 5px;">MovieZephyr</span>
+            </div>
+        
+            <div class="w3-col m6" style="padding-top: 7px;">
+                <div class="w3-contianer w3-black w3-large w3-right-align" style="font-family: Avengero;">
+                    <a href="http://localhost:8000" target="_blank"><button type="button" class="w3-button w3-hover-red w3-hover-text-black w3-round w3-padding">Home</button></a>
+                    <a href="http://localhost:8000/genre"  target="_blank"><button type="button" class="w3-button w3-hover-aqua w3-round w3-padding">Genres</button></a>
+                    <a href="http://localhost:8000/year"  target="_blank"><button type="button" class="w3-button w3-hover-yellow w3-round w3-padding">Year</button></a>
+                    <a href="http://localhost:8000/popular"  target="_blank"><button type="button" class="w3-button w3-hover-green w3-hover-text-black w3-round w3-padding">Popular</button></a>
+                    <a href="http://localhost:8000/rating" target="_blank"><button type="button" class="w3-button w3-hover-orange w3-round w3-padding">Rating</button></a>
+                </div>        
+            </div>
+        </div>   
+    </div>  
+        
+    <!-- main content -->
+    <div class="background1">
+        <span><br><br><br></span> 
+        <div id="card-view">
+            <div id="card-view-bg">
+                <h1 class=" w3-xxlarge w3-center" style="font-family: Avengero; text-shadow: 2px 2px dodgerblue; margin-left: 10px;">Movies Recommendation System</h1><br>
+
+                <h2 style="text-shadow: 2px 2px black;">Struggling to choose from a vast selection of streaming movies?</h2>
+
+                <h3 style="text-shadow: 2px 2px black;">Opt for our recommendation system for top movie picks!</h3><br><br>
+
+                <form action="http://localhost:8000/result" method="POST">
+                    <select name="select_movie" id="movie_list" class="w3-xxlarge w3-round-large" style="width: 200%; height: 60%;">
+                        {% for x in movies_name %}
+                            <option class="w3-large" value="{{x}}">{{x}}</option>
+                        {% endfor %}                                              
+                    </select><br><br>
+                                     
+                    <button type="submit" onclick="change_text()" id="recommend_button" value="submit" class="w3-xlarge w3-hover-red" style="margin-top: 5px; padding: 5px;" onclick="change_text()"><a href="#scroller">Start Now</a></button>(Double tap to see the result)
+
+                    <!-- This script is for print the result -->
+                    <script type="text/javascript">
+                        function change_text()
+                        {
+                            document.getElementById("demo").innerHTML="Recommend Result...";
+                        }
+                    </script>
+
+                    <!-- This script is for enter the search movies -->
+                    <script>
+                        var input = document.getElementById("movie_list");
+                        input.addEventListener("keypress", function(event) 
+                        {
+                            if (event.key === "Enter") 
+                            {
+                                event.preventDefault();
+                                document.getElementById("recommend_button").click();
+                            }
+                        });
+                    </script>          
+                </form>         
+            </div>
+        </div>
+    </div>
+
+    <!-- fetch poster and bottom bar -->
+    <div class="w3-container background2">
+        <span class="background2" id="scroller">
+            <h2 id="demo"class="w3-text-white"></h2>
+        </span>
+
+        {% if select == "select-options"%}
+            <h1 class="w3-hover-blue w3-text-white w3-hover-text-black">
+                <b>please select the correct movie name!</b>
+            </h1>
+        {% else %}
+        <!-- movies poster -->
+        <div class="w3-row-padding">
+            {% for i,j in posters %}
+                <div class="w3-col w3-center s3 l3" style="margin: 70px 0px">
+                    <div class="w3-container" style="height: 350px;">
+                        <a href="https://moviesmod.dev/" target="_blank" rel="noopener noreferrer"><img src="{{i}}" alt="Not Found" class="image w3-round-large" height="350"></a><br><br>
+
+                        <div class="w3-text-white" style="text-shadow: 1.5px 1.5px black; font-size: 20px; margin-bottom: 10px;">
+                            <label for="text">{{j}}</label>
+                        </div>
+                    </div>         
+                </div>
+            {% endfor %}
+        {% endif %}
+
+            <!-- bottom button -->
+            <div class="w3-right-align">
+                <button type="button" class="w3-black w3-round" style="opacity: 0.5"><a href="#top-bar">Go To Top</a></button>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
