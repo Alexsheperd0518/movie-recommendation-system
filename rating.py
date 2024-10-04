@@ -40,31 +40,25 @@ def fetch_poster(poster_id):
     response = requests.get("https://api.themoviedb.org/3/movie/{}?api_key=338016ac774f28f30916824466db50bf".format(poster_id))
     data = response.json()
     poster_path = data['poster_path']
-    return "https://image.tmdb.org/t/p/w500"+poster_path
+    if poster_path == None:
+        return
+    else:
+        return "https://image.tmdb.org/t/p/w500/" + poster_path
 
 # recommendation function for raitng wise movies fetch
 def predict_movies(id):
-    print("type",type(id))
-    
-    
     user_id = int(id)
     user_ratings = []
 
     for item_id in movies['movie_id'].unique():
         user_ratings.append((item_id, model.predict(user_id, item_id).est))
 
-
-    
     # top rating in decending order 
     user_ratings.sort(key=lambda x: x[1], reverse=True)
-
-    
 
     # convert the predticted data into dataframe
     predict_data = pd.DataFrame(user_ratings)
     predicted_movie_id = predict_data[0][0:12]
-
-
 
     # append the movies data new list 
     predicted_movies_details = []
@@ -74,14 +68,12 @@ def predict_movies(id):
     # convert the predicted_movies_details into dataframe    
     movie_details = pd.concat(predicted_movies_details, ignore_index= True)
 
-   
     # recommend the movies name
     recommend_movies = []
     for x in movie_details['title']:
         recommend_movies.append(x)
 
     # fetch the movies poster
-
     recommend_poster = []
     for y in movie_details['movie_id']:
         recommend_poster.append(fetch_poster(y))

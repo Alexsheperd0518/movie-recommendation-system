@@ -9,7 +9,7 @@ from rating import predict_movies,user_list
 
 app = Flask(__name__)
 
-# this is code is for home page 
+# This code is for home page 
 @app.route('/',methods = ["GET","POST"])
 def index():
     final_movies_names=np.insert(movies_name,0,"select-options")
@@ -27,15 +27,6 @@ def index2():
 
 
 
-# This code is for genre page    
-@app.route('/genre',methods = ["GET","POST"])
-def movies_genre():
-    genre = request.form.get("genre_name")
-    names,poster = genres(genre)
-    return render_template('genre.html', genre_list = genre_list, genre = genre, movies_genre_poster = zip(poster,names))
-
-
-
 # This code is for year page    
 @app.route('/year',methods = ["GET","POST"])
 def movies_year():
@@ -43,8 +34,22 @@ def movies_year():
     if year is None:
         return render_template('year.html')
     else:
-        names,poster = year_wise(year)
+        names,poster = year_wise(int(year))
         return render_template('year.html', year_wise_movies = zip(poster, names))
+
+
+
+# This code is for genre page    
+@app.route('/genre',methods = ["GET","POST"])
+def movies_genre():
+    genre = request.form.get("genre_name")
+    if genre is None:
+        return render_template('genre.html',genre_list=genre_list)
+    elif genre == "select-option":
+        return render_template('genre.html',genre_list=genre_list, genre=genre)
+    else:
+        names,poster = genres(genre)
+        return render_template('genre.html', genre_list = genre_list, genre = genre, movies_genre_poster = zip(poster,names))
 
 
 
@@ -77,4 +82,4 @@ def rating():
 
     
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=True,port=8000)

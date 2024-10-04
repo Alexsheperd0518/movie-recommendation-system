@@ -1,4 +1,5 @@
 import pickle
+import random
 import pandas as pd
 import numpy as np
 import requests
@@ -8,7 +9,10 @@ def fetch_poster(poster_id):
     response = requests.get("https://api.themoviedb.org/3/movie/{}?api_key=338016ac774f28f30916824466db50bf".format(poster_id))
     data = response.json()
     poster_path = data['poster_path']
-    return "https://image.tmdb.org/t/p/w500/" + poster_path
+    if poster_path == None:
+        return
+    else:
+        return "https://image.tmdb.org/t/p/w500/" + poster_path
 
 # load the data
 movies_list = pickle.load(open('genres.pkl','rb'))
@@ -28,10 +32,11 @@ def genres(genre):
             recommended_movies.append(movies['title'][get_index])
     find_unique_movies = set(recommended_movies)
     unique_movies = list(find_unique_movies)
+    random.shuffle(unique_movies)
 
     # Top movies
-    top_movies = unique_movies[0:8]
-   
+    top_movies = unique_movies[0:12]
+
     # fetch the posters
     recommend_movies = []
     recommend_poster = []
